@@ -301,7 +301,7 @@ def myaccount(term="login",title=''):
                     session['login'] = True
 
                     flash('You are successfully logged in!', 'success')
-                    return redirect(url_for('myaccount')+'/profile')
+                    return redirect(url_for('myaccount')+'myaccount/profile')
                 else:
                     if user and (user.password!=password):
                         flash('Sorry, Email and password didn\'t match! Please try again', 'danger')
