@@ -1,9 +1,6 @@
 Babel==2.8.0
 blinker==1.4
-<<<<<<< HEAD
 bson==0.5.10
-=======
->>>>>>> 899a38df696f02ff63bc0e7c79219f73de41f9b1
 click==7.1.2
 dnspython==2.0.0
 email-validator==1.1.1
@@ -17,7 +14,6 @@ Flask-PyMongo==2.3.0
 Flask-Security==3.0.0
 Flask-Uploads==0.2.1
 Flask-WTF==0.14.3
-<<<<<<< HEAD
 idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
@@ -29,15 +25,6 @@ python-dateutil==2.8.1
 pytz==2020.1
 six==1.15.0
 slugify==0.0.1
-=======
-heroku==0.1.4
-itsdangerous==1.1.0
-mongoengine==0.20.0
-passlib==1.7.2
-pymongo==3.10.1
-python-dateutil==1.5
-pytz==2020.1
->>>>>>> 899a38df696f02ff63bc0e7c79219f73de41f9b1
 speaklater==1.3
 unicode==2.7
 Werkzeug==1.0.1
