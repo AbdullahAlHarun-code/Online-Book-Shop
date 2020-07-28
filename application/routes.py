@@ -44,6 +44,7 @@ def home():
     return render_template('index.html', title=title, login=login, books=books, categories=categories)
     #return render_template('index.html', login=login, categories=mongo.db.categories.find(), categories1=mongo.db.categories.find())
 
+#this function for page content pagination
 def pagination(count):
     if count>6:
         pagination_block=Markup('<ul class="pagination">')
