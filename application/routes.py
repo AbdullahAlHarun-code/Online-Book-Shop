@@ -39,9 +39,9 @@ def home():
 
 #this function for page content pagination
 def pagination(count):
-    if count>6:
+    if count>9:
         pagination_block=Markup('<ul class="pagination">')
-        for value in range(0,count%6):
+        for value in range(0,count%9):
             active=''
             if value==0:
                 active='active'
