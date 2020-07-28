@@ -8,7 +8,7 @@ from application.dbmodels import Allcategory
 from wtforms.fields.html5 import DateField, DateTimeLocalField
 
 
-
+# Login for user
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6,max=15)])
