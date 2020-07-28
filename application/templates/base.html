@@ -1,0 +1,18 @@
+{% include "includes/header.html" %}
+                  <div id="templatemo_content">
+                     {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                          {% for category, message in messages %}
+                            <div class="alert alert-{{category}}">
+                              <p>{{ message }}</p>
+                            </div>
+                          {% endfor %}
+                        {% endif %}
+                     {% endwith %}
+                     {% block content %}
+
+                     {% endblock %}
+                     <div class="cleaner_with_height">&nbsp;</div>
+                  </div>
+                  <!-- end of content -->
+{% include "includes/footer.html" %}

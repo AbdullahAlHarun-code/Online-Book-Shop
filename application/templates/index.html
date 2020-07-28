@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div id="templatemo_header">
+</div>
+<!-- end of header -->
+<div id="templatemo_content">
+   <div id="templatemo_content_right" class="home-content">
+      <div class="leadheader center-align-header">
+          <h3 class="text-uppercase">Recently Added</h3>
+          <a href="{{url_for('category')}}/recently_added">View all</a>
+      </div>
+     {% include 'includes/carousel.html'%}
+     <div class="leadheader">
+         <img style="width:100%" src="{{ url_for('static', filename='images/home-section.jpg')}}" alt="">
+         <h1>Best Online Book Shop</h1>
+     </div>
+   </div>
+   <!-- end of content right -->
+   <div class="cleaner_with_height">&nbsp;</div>
+</div>
+<!-- end of content -->
+
+{% endblock %}
