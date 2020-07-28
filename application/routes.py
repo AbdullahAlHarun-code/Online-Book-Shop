@@ -83,7 +83,7 @@ def category(cat='allcategories'):
         page_pagination = pagination(books.count())
         return render_template('category.html', recenty_added=recenty_added, page_pagination=page_pagination, title=title, cat=cat, login=login, categories=categories, books=books)
 
-
+# Single book view
 @app.route('/single_book/', methods=['GET', 'POST'])
 @app.route('/single_book/<title>', methods=['GET', 'POST'])
 def single_book(title=''):
