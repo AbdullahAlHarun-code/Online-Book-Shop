@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'heroku working and finally'
+    return 'heroku working and finally and have fun'
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
