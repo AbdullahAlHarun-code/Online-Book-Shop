@@ -1,11 +1,11 @@
 import os
-from flask import Flask, render_template, redirect, request, url_for, flash, jsonify
+from flask import Flask
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return 'hello mama valo aso'
+    return 'hello mama valo aso amra asi'
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
