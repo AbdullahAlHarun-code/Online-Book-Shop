@@ -12,7 +12,7 @@ from application.models import Users, Books, Testuser, Categories
 from application.dbmodels import Title, Helper
 #from flask_uploads import configure_uploads, IMAGES, UploadSet
 
-
+#Check login for user
 def check_login():
     if session.get('login'):
         return True
