@@ -1,6 +1,6 @@
 from application import app, db
 from flask import render_template, request, Markup, json, jsonify, Response, redirect, flash, url_for, session
-from flask_pymongo import PyMongo
+#from flask_pymongo import PyMongo
 from datetime import datetime, date
 import bson
 import os.path
@@ -12,14 +12,6 @@ from application.models import Users, Books, Testuser, Categories
 from application.dbmodels import Title, Helper
 #from flask_uploads import configure_uploads, IMAGES, UploadSet
 
-app.config['MONGO_DBNAME']='book_shop'
-app.config['MONGO_URI'] = 'mongodb+srv://root:Zee9Zee9@firstcluster.qhtcj.mongodb.net/book_shop?retryWrites=true&w=majority'
-
-app.secret_key = 'asdfaiueh345345wk3jfnsdjkfkdjfvkdfjgsdfg45345'
-
-
-
-mongo = PyMongo(app)
 
 def check_login():
     if session.get('login'):
@@ -99,20 +91,13 @@ def single_book(title=''):
         title = Title
         return render_template('single.html', recenty_added=recenty_added, user=user, categories=categories, login=login, helper=helper, title=title, book=book, book_title=book_title)
     else:
-        return render_template('single.html', recenty_added=recenty_added, login=login, categories=mongo.db.categories.find(), categories1=mongo.db.categories.find(), single_book=True)
+        return render_template('single.html', recenty_added=recenty_added, login=login, categories=categories, single_book=True)
 
 
 
-def add_user():
-    users =  mongo.db.users
-    users.insert_one(request.form.to_dict())
-    return redirect(url_for('profile'))
 
-@app.route('/testdata')
-def testdata():
-    ##users =  mongo.db.users
-    ##users.insert_one(request.form.to_dict())
-    return render_template('testdata.html')
+
+
 
 @app.route('/myaccount/', methods=['GET', 'POST'])
 @app.route('/myaccount/<term>', methods=['GET', 'POST'])
@@ -318,15 +303,6 @@ def myaccount(term="login",title=''):
 
 
 
-class User():
-    users = mongo.db.users
-
-    def add(data):
-        users = mongo.db.users
-        users.insert_one(data)
-    def getUsers():
-        users = mongo.db.users
-        return users.find()
 
 
 @app.route("/user")

@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, json, jsonify, Response, redirect, flash, url_for, session
-from flask_pymongo import PyMongo
+#from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from application.forms import LoginForm, RegisterForm
 from config import Config
