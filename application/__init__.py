@@ -21,6 +21,6 @@ db.init_app(app)
 from application import routes
 
 if __name__ == '__main__':
-    app.run(host=os.envriron.get('IP'),
+    app.run(host=os.environ.get('IP'),
         port=int(os.environ.get('PORT')),
         debug=True)
