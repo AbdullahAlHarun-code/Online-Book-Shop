@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <div id="templatemo_content">
+    <div id="templatemo_content">
+      {% include "includes/myaccount-sidebar.html" %}
+       <!-- end of content left -->
+       <div id="templatemo_content_right">
+
+           <h1>My Profile</h1>
+
+               <div class="well profile">
+                 <div class="col-sm-12">
+                     <div class="col-xs-12 col-sm-8">
+                         <h2><strong>Name:</strong> {{user.name}}</h2>
+                         <h2><strong>Email: </strong> {{user.email}} </h2>
+                         <h2><strong>Total Books: </strong> {{books.count()}} </h2>
+                     </div>
+                 </div>
+                 <hr>
+                 <div class="col-xs-12 col-md-12 col-sm-12 divider text-center">
+                     <div class="col-xs-12 col-sm-4 col-md-4 emphasis">
+                         <h2><strong></strong></h2>
+                         <a href="{{url_for('myaccount')}}add_new_book" class="btn btn-info btn-block"><span class="fa fa-plus"></span> Add Book </a>
+                     </div>
+                     <div class="col-xs-12 col-sm-4 col-md-4 emphasis">
+                         <h2><strong></strong></h2>
+                         <a href="{{url_for('myaccount')}}edit_profile" class="btn btn-info btn-block"><span class="fa fa-edit"></span> Edit </a>
+                     </div>
+                 </div>
+            </div>
+            <div class="cleaner_with_height">&nbsp;</div>
+
+
+       </div> <!-- end of content right -->
+       <!-- end of content right -->
+       <div class="cleaner_with_height">&nbsp;</div>
+    </div>
+    <!-- end of content -->
+  </div>
+
+{% endblock content %}

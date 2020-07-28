@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="templatemo_content">
+   <div id="templatemo_content">
+      {% include "includes/myaccount-sidebar.html" %}
+      <!-- end of content left -->
+      <div id="templatemo_content_right">
+         <h1>Edit Profile</h1>
+         <div class="well profile">
+            <div class="col-sm-12">
+               <div class="col-xs-12 col-sm-8">
+                  {{count}}
+                  <form action="{{ url_for('myaccount')}}edit_profile" method="post">
+                     {{ form.hidden_tag() }}
+                     <div class="form-group">
+                        {{ form.name.label }}
+                        {{ form.name(value=user.name, size=35,class="form-control") }}
+                        {% for error in form.name.errors %}
+                        <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                     </div>
+                     <div class="form-group">
+                        {{ form.email.label }}
+                        {{ form.email(value=user.email, size=35,class="form-control") }}
+                        {% for email in form.email.errors %}
+                        <span class="error-message">{{ email }}</span>
+                        {% endfor %}
+                     </div>
+                     {{ form.submit(class="btn btn-warning") }}
+                  </form>
+               </div>
+            </div>
+         </div>
+         <div class="cleaner_with_height">&nbsp;</div>
+      </div>
+      <!-- end of content right -->
+      <!-- end of content right -->
+      <div class="cleaner_with_height">&nbsp;</div>
+   </div>
+   <!-- end of content -->
+</div>
+{% endblock content %}
