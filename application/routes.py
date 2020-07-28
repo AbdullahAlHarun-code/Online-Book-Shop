@@ -45,9 +45,9 @@ def home():
     #return render_template('index.html', login=login, categories=mongo.db.categories.find(), categories1=mongo.db.categories.find())
 
 def pagination(count):
-    if count>3:
+    if count>6:
         pagination_block=Markup('<ul class="pagination">')
-        for value in range(0,count%3):
+        for value in range(0,count%6):
             active=''
             if value==0:
                 active='active'
