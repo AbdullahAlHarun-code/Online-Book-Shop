@@ -19,7 +19,7 @@ def check_login():
     else:
         return False
 
-#404 page function
+#404 page function and default page
 @app.route('/page_not_found')
 def page_not_found():
     login=check_login()
