@@ -15,32 +15,33 @@
       <div id="main_wrap" class="container">
       <div class="row">
       <div id="templatemo_menu">
-         <div class="dropdown top-dropdown-menu">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">My Account
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-               {% if login %}
-               <li><a href="{{ url_for('myaccount') }}/register">Profile</a></li>
-               <li><a href="{{ url_for('myaccount') }}mybooks">My Books</a></li>
-               <li><a href="{{ url_for('myaccount') }}add_new_book">Add New Book</a></li>
-               <li><a href="{{ url_for('myaccount') }}change_password">Change Password</a></li>
-               <li><a href="{{ url_for('myaccount') }}logout">Logout</a></li>
-               {% else %}
-               <li><a href="{{ url_for('myaccount') }}login">Login</a></li>
-               <li><a href="{{ url_for('myaccount') }}register">Register</a></li>
-               {% endif %}
-            </ul>
-         </div>
+        {% if login %}
+           <div class="dropdown top-dropdown-menu">
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">My Account
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                 <li><a href="{{ url_for('myaccount') }}/register">Profile</a></li>
+                 <li><a href="{{ url_for('myaccount') }}mybooks">My Books</a></li>
+                 <li><a href="{{ url_for('myaccount') }}add_new_book">Add New Book</a></li>
+                 <li><a href="{{ url_for('myaccount') }}change_password">Change Password</a></li>
+                 <li><a href="{{ url_for('myaccount') }}logout">Logout</a></li>
+              </ul>
+           </div>
+         {% endif %}
          <ul class="visible-md visible-sm visible-lg">
             <li><a href="{{ url_for('home') }}" class="current">Home</a></li>
-            <li><a href="{{ url_for('category') }}">Browse</a></li>
+            <li><a href="{{ url_for('browse') }}">Browse</a></li>
+            {% if not login %}
+              <li><a href="{{ url_for('myaccount') }}/login">Login</a></li>
+              <li><a href="{{ url_for('myaccount') }}/register">Register</a></li>
+            {% endif %}
          </ul>
          <!-- Simulate a smartphone / tablet -->
          <!-- Top Navigation Menu -->
          <div class="topnav">
             <div id="myLinks" class="collapse">
                <a href="{{ url_for('home') }}">Home</a>
-               <a href="{{ url_for('category') }}">Browse</a>
+               <a href="{{ url_for('browse') }}">Browse</a>
                <a href="{{ url_for('myaccount') }}/login">My Account</a>
             </div>
             <button class="icon"  data-toggle="collapse" data-target="#myLinks"><i class="fa fa-bars"></i></button>
@@ -49,3 +50,9 @@
          <a href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='images/logo.png')}}" alt=""></a>
       </div>
       <!-- end of menu -->
+      <div style="height:60px;width:100%" class="fix-heading">
+
+      </div>
+      <div class="cleaner">
+
+      </div>

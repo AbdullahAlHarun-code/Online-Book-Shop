@@ -22,6 +22,7 @@ class Books(db.Document):
     author = db.StringField(max_length=200)
     user_id = db.IntField()
     image_url = db.StringField()
+    slug = db.StringField()
     ISBN = db.StringField(max_length=100)
     category = db.StringField(max_length=100)
     overview = db.StringField()

@@ -6,7 +6,6 @@
          <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
             <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
          </ol>
          <!-- Wrapper for carousel items -->
          <div class="carousel-inner">
@@ -14,7 +13,7 @@
                <div class="row">
                   {% for key in range(0,4) %}
                   <a href="{{url_for('single_book')}}/{{title.getUrlTitle(books[key].book_name)}}?isbn={{books[key].ISBN}}" class="templatemo_product_box">
-                     <h1>{{books[key].book_name[0:20]}}</h1>
+                     <h1>{{title.getBookTitle(books[key].book_name)}}</h1>
                      <img src="{{ url_for('static', filename='uploads/2020/')}}{{books[key].image_url}}" alt="image" />
                      <div class="cleaner">&nbsp;</div>
                   </a>
@@ -25,18 +24,7 @@
                <div class="row">
                   {% for key in range(4,8) %}
                   <a href="{{url_for('single_book')}}/{{title.getUrlTitle(books[key].book_name)}}?isbn={{books[key].ISBN}}" class="templatemo_product_box">
-                     <h1>{{books[key].book_name[0:20]}}</h1>
-                     <img src="{{ url_for('static', filename='uploads/2020/')}}{{books[key].image_url}}" alt="image" />
-                     <div class="cleaner">&nbsp;</div>
-                  </a>
-                  {% endfor %}
-               </div>
-            </div>
-            <div class="carousel-item">
-               <div class="row">
-                  {% for key in range(8,12) %}
-                  <a href="{{url_for('single_book')}}/{{title.getUrlTitle(books[key].book_name)}}?isbn={{books[key].ISBN}}" class="templatemo_product_box">
-                     <h1>{{books[key].book_name[0:20]}}</h1>
+                     <h1>{{title.getBookTitle(books[key].book_name)}}</h1>
                      <img src="{{ url_for('static', filename='uploads/2020/')}}{{books[key].image_url}}" alt="image" />
                      <div class="cleaner">&nbsp;</div>
                   </a>

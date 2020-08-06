@@ -44,13 +44,25 @@ class Title():
 
     def getUrlTitle(title):
         final_title = title.split()
-        final_title = "_".join(final_title)
-        return final_title
+        final_title = "-".join(final_title)
+        return final_title.lower()
 
     def getTitle(url_title):
-        final_title = url_title.rsplit("_")
+        final_title = url_title.rsplit("-")
         final_title = " ".join(final_title)
-        return final_title
+        return final_title.title()
+
+    def getBookTitle(book_title):
+        if len(book_title)>15:
+            return book_title[0:14]+'..'
+        else:
+            return book_title
+
+    def getSlug(title):
+        final_title = title.split()
+        final_title = "-".join(final_title)
+        now = datetime.now()
+        return final_title.lower()+'-'+now.strftime("%Y-%m-%d-%H-%M-%S")
 
 
 
@@ -61,5 +73,10 @@ class Helper():
         final_date = str(date.day)
         final_date += '-'+str(date.strftime("%b"))
         final_date += ' '+str(date.year)
+        final_date += ' '+str(date.strftime("%H:%M:%S"))
         #calendar.timegm(time.gmtime())
         return final_date
+
+    def getTimestamp(datetime_str):
+        datetime_object = datetime.strptime(datetime_str, '%m/%d/%y')
+        return datetime_object

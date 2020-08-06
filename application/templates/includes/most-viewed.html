@@ -1,0 +1,19 @@
+<div id="most_viewed_section">
+  {% if most_viewed %}
+    {% for book in most_viewed[0:8] %}
+     <div class="templatemo_product_box mybooks-product-box">
+        <h1>{{title.getBookTitle(book.book_name)}}</h1>
+        <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
+        <div class="product_info">
+           <div class="detail_button"><a href="{{ url_for('single_book') }}/{{title.getUrlTitle(book.book_name)}}?isbn={{book.ISBN}}">Detail</a></div>
+        </div>
+        <div class="cleaner">&nbsp;</div>
+     </div>
+     {% endfor%}
+   {% else %}
+     <p>No books found!</p>
+   <div class="cleaner_with_height">&nbsp;</div>
+   {{page_pagination}}
+   {% endif %}
+
+</div>

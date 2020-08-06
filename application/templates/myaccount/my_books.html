@@ -14,7 +14,7 @@
                      <div class="col-xs-12 col-sm-12 col-md-12">
                        {% for book in books %}
                        <div class="templatemo_product_box mybooks-product-box">
-                          <h1>{{book.book_name}}</h1>
+                          <h1>{{title.getBookTitle(book.book_name)}}</h1>
                           <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
                           <div class="product_info">
                              <div class="detail_button"><a href="{{ url_for('myaccount') }}book_view/{{title.getUrlTitle(book.book_name)}}?isbn={{book.ISBN}}">Detail</a></div>

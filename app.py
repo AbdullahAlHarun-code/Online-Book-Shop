@@ -3,7 +3,7 @@ from application import app, db
 from flask import render_template, request, Markup, json, jsonify, Response, redirect, flash, url_for, session
 from flask_pymongo import PyMongo
 from datetime import datetime, date
-import bson
+import bson, math
 import os.path
 import random
 from application.forms import ChangePassword, LoginForm, RegisterForm, EditUser, AddNewBook, EditBook, DeleteBook
@@ -13,20 +13,6 @@ from application.models import Users, Books, Testuser, Categories
 from application.dbmodels import Title, Helper
 #from flask_uploads import configure_uploads, IMAGES, UploadSet
 
-app.config['MONGO_DBNAME']='book_shop'
-app.config['MONGO_URI'] = 'mongodb+srv://root:Zee9Zee9@firstcluster.qhtcj.mongodb.net/book_shop?retryWrites=true&w=majority'
-
-app.secret_key = 'asdfaiueh345345wk3jfnsdjkfkdjfvkdfjgsdfg45345'
-
-
-
-mongo = PyMongo(app)
-# Check for login
-
-"""@app.route('/')
-def home():
-
-    return 'hello mama'"""
 
 
 def check_login():
@@ -49,30 +35,61 @@ def home():
     books=Books.objects().order_by('-date')
     title = Title
     categories=Categories.objects.all()
-    return render_template('index.html', title=title, login=login, books=books, categories=categories)
+    most_viewed=Books.objects().order_by('-date')
+
+    return render_template('index.html', title=title, login=login, books=books, categories=categories, most_viewed=most_viewed)
     #return render_template('index.html', login=login, categories=mongo.db.categories.find(), categories1=mongo.db.categories.find())
 
-def pagination(count):
-    if count>3:
+def pagination(count,range_product,magic_number,page_link):
+    magic_number=magic_number
+    if count>magic_number:
+        range_array=range_product.split('-')
         pagination_block=Markup('<ul class="pagination">')
-        for value in range(0,count%3):
+        result = math.floor(count/magic_number)
+        reminder = count%magic_number
+        page_number=0
+        if result>0 and reminder>0:
+            page_number = result+1
+        elif result>0 and reminder==0:
+            page_number = result
+        for value in range(0,page_number):
             active=''
-            if value==0:
+            disabled=''
+            items=str((value*magic_number+1))+'-'+str((magic_number*(value+1)))
+            if (value*magic_number+1)==int(range_array[0]):
                 active='active'
+                disabled='disabled'
 
-            pagination_block+=Markup('<li><a href="#" class="'+active+'">'+str(value+1)+'</a></li>')
+            pagination_block+=Markup('<li><a href="'+page_link+'/?items='+items+'" '+disabled+' class="'+active+' '+disabled+'">'+str(value+1)+'</a></li>')
 
         pagination_block+=Markup('</ul>')
+        #return math.floor(count/magic_number)
         return pagination_block
     else:
         return ''
+
+magic_number=6
+
+def get_pagination(books,items,page_link):
+    range_product='1-'+str(magic_number)
+    filter_books=''
+    if items:
+        range_product=items
+        range_array=range_product.split('-')
+        filter_books = books[(int(range_array[0])-1):(int(range_array[1]))]
+    else:
+        filter_books = books[0:magic_number]
+
+    return [pagination(books.count(),range_product,magic_number,page_link),filter_books]
+
 @app.route('/category', methods=['GET', 'POST'])
-@app.route('/category/<cat>', methods=['GET', 'POST'])
+@app.route('/category/<cat>/', methods=['GET', 'POST'])
 def category(cat='allcategories'):
     login=check_login()
     categories = Categories.objects.all()
     category_name =Title.getTitle(cat)
-    books=Books.objects(category=category_name)
+    category_url=cat
+    books=Books.objects(category=category_name.title())
     recenty_added=Books.objects().order_by('-date')
     title = Title
     if cat=='allcategories':
@@ -81,14 +98,37 @@ def category(cat='allcategories'):
     elif cat=='recently_added':
         cat='Recently Added'
         books = recenty_added
-        page_pagination = pagination(books.count())
+
+        pagination = get_pagination(recenty_added,request.args.get('items'),url_for('category')+'/'+category_url.lower())
+        page_pagination = pagination[0]
+        books = pagination[1]
+
         return render_template('category.html', recenty_added=recenty_added, page_pagination=page_pagination, title=title, cat=cat, login=login, categories=categories, books=books)
     else:
-        cat=cat+' Books'
+        cat=cat+' Books'+str(books.count())
         books=books.order_by('-date')
-        page_pagination = pagination(books.count())
+
+        pagination = get_pagination(books,request.args.get('items'),url_for('category')+'/'+category_url.lower())
+        page_pagination = pagination[0]
+        books = pagination[1]
+
         return render_template('category.html', recenty_added=recenty_added, page_pagination=page_pagination, title=title, cat=cat, login=login, categories=categories, books=books)
 
+
+
+@app.route('/browse/', methods=['GET', 'POST'])
+def browse():
+    login=check_login()
+    categories = Categories.objects.all()
+    recenty_added=Books.objects().order_by('-date')
+    title = Title
+    #page_pagination = pagination(recenty_added.count())
+
+
+    pagination = get_pagination(recenty_added,request.args.get('items'),url_for('browse'))
+    page_pagination = pagination[0]
+    recenty_added = pagination[1]
+    return render_template('browse.html', page_pagination=page_pagination, recenty_added=recenty_added, title=title, login=login, categories=categories, books=recenty_added)
 
 @app.route('/single_book/', methods=['GET', 'POST'])
 @app.route('/single_book/<title>', methods=['GET', 'POST'])
@@ -99,26 +139,17 @@ def single_book(title=''):
 
         book_title =Title.getTitle(title)
         book = Books.objects(book_name=book_title,ISBN=request.args.get('isbn'))
+        if book[0].date==datetime.strptime('2020-08-06 00:50:11', '%Y-%m-%d %H:%M:%S'):
+            print(book[0].date)
         categories = Categories.objects.all()
         user=Users.objects(user_id=book[0].user_id)
         helper=Helper
         title = Title
         return render_template('single.html', recenty_added=recenty_added, user=user, categories=categories, login=login, helper=helper, title=title, book=book, book_title=book_title)
     else:
-        return render_template('single.html', recenty_added=recenty_added, login=login, categories=mongo.db.categories.find(), categories1=mongo.db.categories.find(), single_book=True)
+        return render_template('single.html', recenty_added=recenty_added, login=login, categories=categories, categories1=categories, single_book=True)
 
 
-
-def add_user():
-    users =  mongo.db.users
-    users.insert_one(request.form.to_dict())
-    return redirect(url_for('profile'))
-
-@app.route('/testdata')
-def testdata():
-    ##users =  mongo.db.users
-    ##users.insert_one(request.form.to_dict())
-    return render_template('testdata.html')
 
 @app.route('/myaccount/', methods=['GET', 'POST'])
 @app.route('/myaccount/<term>', methods=['GET', 'POST'])
@@ -126,6 +157,7 @@ def testdata():
 def myaccount(term="login",title=''):
     login=check_login()
     form = LoginForm()
+
     if login:
         active_user = Users.objects(user_id=session.get('user_id')).first()
         books = Books.objects(user_id=session.get('user_id'))
@@ -173,6 +205,7 @@ def myaccount(term="login",title=''):
 
         elif term  == 'add_new_book':
             form = AddNewBook()
+            title=Title
             if form.validate_on_submit():
                 books = Books.objects(user_id=session.get('user_id'),book_name=form.book_name.data)
                 if not books:
@@ -183,7 +216,8 @@ def myaccount(term="login",title=''):
                     book_name   = form.book_name.data
                     author      = form.author.data
                     user_id     = active_user.user_id
-                    image_url     = full_name
+                    image_url   = full_name
+                    slug        = title.getSlug(form.book_name.data)
                     ISBN        = form.ISBN.data
                     category    = form.category.data
                     overview    = form.overview.data
@@ -191,6 +225,7 @@ def myaccount(term="login",title=''):
 
                     book = Books(book_name=book_name, author=author, user_id=user_id, image_url=image_url, ISBN=ISBN, category=category, overview=overview, date=date)
                     book.save()
+                    print(slug)
                     flash('You are successfully added a new book!', 'success')
                     return redirect(url_for('myaccount')+'/mybooks')
                 else:
@@ -227,7 +262,7 @@ def myaccount(term="login",title=''):
                     date=datetime.now()
                     update_book = book.update(book_name=book_name, author=author, user_id=user_id, image_url=image_url, ISBN=ISBN, category=category, overview=overview, date=date)
                     flash('You are successfully update your book!', 'success')
-                    return redirect(url_for('myaccount')+'/edit_book/'+title+'#isbn='+book.ISBN)
+                    return redirect(url_for('myaccount')+'/edit_book/'+title+'#isbn='+ISBN)
                 else:
                     return render_template('myaccount/edit_book.html', login=login, title=title, book_title=book_title, book=book, helper=helper, form=form, user=active_user)
             else:
