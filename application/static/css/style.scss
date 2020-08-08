@@ -743,6 +743,9 @@ img {
   #templatemo_content_left{
     display:none;
   }
+	body{
+		font-size: 2.5rem;
+	}
 }
 @include tablet{
   .container{min-width:100%}
@@ -752,6 +755,12 @@ img {
   }
 	.fix-heading{
 		height:160px;
+	}
+	body{
+		font-size: 2.5rem;
+	}
+	.form-control{
+		font-size: 2.5rem
 	}
   #templatemo_menu {
     height:160px;
