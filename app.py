@@ -10,7 +10,7 @@ from application.forms import ChangePassword, LoginForm, RegisterForm, EditUser,
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from application.models import Users, Books, Testuser, Categories
-from application.dbmodels import Title, Helper
+from application.dbmodels import Slug, Helper
 #from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 
@@ -31,13 +31,9 @@ def page_not_found():
 
 @app.route('/')
 def home():
-    login=check_login()
-    books=Books.objects().order_by('-date')
-    title = Title
-    categories=Categories.objects.all()
-    most_viewed=Books.objects().order_by('-date')
+    page_data = page_initial_data('home', None, None)
 
-    return render_template('index.html', title=title, login=login, books=books, categories=categories, most_viewed=most_viewed)
+    return render_template('index.html', page_data=page_data)
     #return render_template('index.html', login=login, categories=mongo.db.categories.find(), categories1=mongo.db.categories.find())
 
 def pagination(count,range_product,magic_number,page_link):
@@ -82,93 +78,148 @@ def get_pagination(books,items,page_link):
 
     return [pagination(books.count(),range_product,magic_number,page_link),filter_books]
 
-@app.route('/category', methods=['GET', 'POST'])
-@app.route('/category/<cat>/', methods=['GET', 'POST'])
-def category(cat='allcategories'):
-    login=check_login()
-    categories = Categories.objects.all()
-    category_name =Title.getTitle(cat)
-    category_url=cat
-    books=Books.objects(category=category_name.title())
-    recenty_added=Books.objects().order_by('-date')
-    title = Title
-    if cat=='allcategories':
-        cat='All Categories'
-        return render_template('category.html', recenty_added=recenty_added, title=title, cat=cat, login=login, categories=categories, books=books)
-    elif cat=='recently_added':
-        cat='Recently Added'
-        books = recenty_added
+def update_view(slug):
+    book = Books.objects(slug=slug)
+    book = book.update(book_name=book[0].book_name, author=book[0].author, user_id=book[0].user_id, image_url=book[0].image_url, slug=book[0].slug, ISBN=book[0].ISBN, category=book[0].category, view=(book[0].view+1), overview=book[0].overview, date=book[0].date)
+    return book
 
-        pagination = get_pagination(recenty_added,request.args.get('items'),url_for('category')+'/'+category_url.lower())
-        page_pagination = pagination[0]
-        books = pagination[1]
-
-        return render_template('category.html', recenty_added=recenty_added, page_pagination=page_pagination, title=title, cat=cat, login=login, categories=categories, books=books)
+def is_books_content(books_content):
+    if books_content:
+        return  True
     else:
-        cat=cat+' Books'+str(books.count())
-        books=books.order_by('-date')
+        return  False
 
-        pagination = get_pagination(books,request.args.get('items'),url_for('category')+'/'+category_url.lower())
-        page_pagination = pagination[0]
-        books = pagination[1]
+def page_initial_data(content,slug,term):
+    class PageData():
+        login           = check_login()
+        categories      = Categories.objects.all()
+        recently_added  = Books.objects().order_by('-date')
+        most_viewed     = Books.objects().order_by('-view')
+        slug_ob         = Slug
+        user            = ''
+        user_books      = ''
+        helper          = Helper
+        initial_books   = ''
+        books_content   = False
+        form            = ''
+        if content == 'home':
+            initial_books   = recently_added
+            books_content   = True
+        if content == 'browse':
+            page_title      = 'All Books'
+            initial_books   = recently_added
+            books_content   = True
 
-        return render_template('category.html', recenty_added=recenty_added, page_pagination=page_pagination, title=title, cat=cat, login=login, categories=categories, books=books)
+        if content == 'category' and slug:
+            if slug == 'allcategories':
+                books_content   = False
+                page_title      = 'All Categories'
+                initial_books   = categories
+            elif slug=='recently_added':
+                books_content   = True
+                page_title      = 'Recently Added'
+                initial_books   = recently_added
+            elif slug=='most_viewed':
+                books_content   = True
+                page_title      = 'Most Viewed'
+                initial_books   = most_viewed
+            else:
+                books_content   = True
+                initial_books   = Books.objects(category=slug_ob.getTitle(slug))
+                page_title      = slug_ob.getTitle(slug)+' Books'
+        if content == 'single_book':
+            if slug:
+                books_content   = True
+                update_view(slug=slug)
+                initial_books = Books.objects(slug=slug)
+                user = Users.objects(user_id=initial_books[0].user_id)
+            else:
+                books_content   = False
+        if content == 'myaccount':
+
+            if login:
+                user_books = Books.objects(user_id=session.get('user_id')).order_by('-date')
+                user = Users.objects(user_id=session.get('user_id')).first()
+                initial_books = Books.objects(user_id=session.get('user_id')).order_by('-date')
+
+                if term == 'add_new_book':
+                    books_content   = False
+                    form = AddNewBook()
+                elif term  == 'change_password':
+                    books_content   = False
+                    form = ChangePassword(request.form, old_password='')
+                elif term  == 'book_view':
+                    if slug:
+                        form = DeleteBook()
+                        update_view(slug=slug)
+                        initial_books = Books.objects(slug=slug)
+                        books_content   = is_books_content(initial_books)
+                elif term == 'edit_book':
+                    if slug:
+                        initial_books = Books.objects(slug=slug)
+                        books_content   = is_books_content(initial_books)
+                        form = EditBook(request.form, category=initial_books[0].category)
+                elif term == 'edit_profile':
+                    form = EditUser()
+                    books_content   = False
+                elif term  == 'delete_book':
+                    form = DeleteBook()
+            else:
+                if term == 'login':
+                    form = LoginForm()
+                    books_content = False
+                if term == 'register':
+                    books_content = False
+                    form = RegisterForm()
 
 
+        if books_content:
+            filter_pagination_books      = get_pagination(initial_books,request.args.get('items'),url_for(content))
+            page_pagination = filter_pagination_books[0]
+            books  = filter_pagination_books[1]
+
+
+    return PageData
+
+@app.route('/category', methods=['GET', 'POST'])
+@app.route('/category/<category_slug>/', methods=['GET', 'POST'])
+def category(category_slug='allcategories'):
+    page_data = page_initial_data('category', category_slug, None)
+    return render_template('category.html', page_data=page_data)
 
 @app.route('/browse/', methods=['GET', 'POST'])
 def browse():
-    login=check_login()
-    categories = Categories.objects.all()
-    recenty_added=Books.objects().order_by('-date')
-    title = Title
-    #page_pagination = pagination(recenty_added.count())
 
-
-    pagination = get_pagination(recenty_added,request.args.get('items'),url_for('browse'))
-    page_pagination = pagination[0]
-    recenty_added = pagination[1]
-    return render_template('browse.html', page_pagination=page_pagination, recenty_added=recenty_added, title=title, login=login, categories=categories, books=recenty_added)
+    page_data = page_initial_data('browse',None, None)
+    return render_template('browse.html', page_data=page_data)
 
 @app.route('/single_book/', methods=['GET', 'POST'])
-@app.route('/single_book/<title>', methods=['GET', 'POST'])
-def single_book(title=''):
-    login=check_login()
-    recenty_added=Books.objects().order_by('-date')
-    if title:
-
-        book_title =Title.getTitle(title)
-        book = Books.objects(book_name=book_title,ISBN=request.args.get('isbn'))
-        if book[0].date==datetime.strptime('2020-08-06 00:50:11', '%Y-%m-%d %H:%M:%S'):
-            print(book[0].date)
-        categories = Categories.objects.all()
-        user=Users.objects(user_id=book[0].user_id)
-        helper=Helper
-        title = Title
-        return render_template('single.html', recenty_added=recenty_added, user=user, categories=categories, login=login, helper=helper, title=title, book=book, book_title=book_title)
+@app.route('/single_book/<slug>', methods=['GET', 'POST'])
+def single_book(slug=''):
+    page_data = page_initial_data('single_book',slug, None)
+    if page_data.books_content:
+        return render_template('single.html', page_data=page_data)
     else:
-        return render_template('single.html', recenty_added=recenty_added, login=login, categories=categories, categories1=categories, single_book=True)
+        return render_template('404.html', text='This book not found !')
 
 
 
 @app.route('/myaccount/', methods=['GET', 'POST'])
 @app.route('/myaccount/<term>', methods=['GET', 'POST'])
-@app.route('/myaccount/<term>/<title>', methods=['GET', 'POST'])
-def myaccount(term="login",title=''):
-    login=check_login()
-    form = LoginForm()
+@app.route('/myaccount/<term>/<slug>', methods=['GET', 'POST'])
+def myaccount(term="login",slug=''):
+    page_data = page_initial_data('myaccount',slug,term)
 
-    if login:
+    if page_data.login:
         active_user = Users.objects(user_id=session.get('user_id')).first()
-        books = Books.objects(user_id=session.get('user_id'))
+        books = Books.objects(user_id=session.get('user_id')).order_by('-date')
         if term == 'profile':
-            return render_template('myaccount/profile.html', login=login, user=active_user, books=books)
+            return render_template('myaccount/profile.html', page_data=page_data)
         elif term == 'edit_profile':
-            form = EditUser()
-            if form.validate_on_submit():
-                name = form.name.data
-                email = form.email.data
-                if active_user.email==email:
+            if page_data.form.validate_on_submit():
+                name    = page_data.form.name.data
+                email   = page_data.form.email.data
+                if page_data.user.email == email:
                     user = Users.objects(user_id=session.get('user_id')).update(name=name, email=email)
                     flash('You are successfully updated your profile!', 'success')
                     return redirect(url_for('myaccount')+'/edit_profile')
@@ -184,97 +235,78 @@ def myaccount(term="login",title=''):
                         flash('You are successfully update your profile!', 'success')
                         return redirect(url_for('myaccount')+'/edit_profile')
             else:
-                return render_template('myaccount/edit_profile.html', form=form, login=login, user=active_user, books=books)
+                return render_template('myaccount/edit_profile.html', page_data=page_data)
         elif term  == 'mybooks':
-            if books:
-                slug = Title.getUrlTitle(books[0].book_name)
-                title = Title
-            else:
-                slug = ''
+            return render_template('myaccount/my_books.html', page_data=page_data)
 
-            return render_template('myaccount/my_books.html', title=title, slug=slug, login=login, user=active_user,  books=books)
         elif term  == 'book_view':
-            if title:
-                book_title =Title.getTitle(title)
-                book = Books.objects(book_name=book_title)
-                form = DeleteBook()
-                helper=Helper
-                return render_template('myaccount/book_view.html', form=form, login=login, helper=helper, title=title, user=active_user, book=book, book_title=book_title)
-            else:
-                return render_template('myaccount/book_view.html', login=login, user=active_user, books=books, book_title=book_title)
+                if page_data.books_content:
+                    return render_template('myaccount/book_view.html', page_data=page_data)
+                else:
+                    return render_template('404.html',text='This item not found')
+
+
 
         elif term  == 'add_new_book':
-            form = AddNewBook()
-            title=Title
-            if form.validate_on_submit():
-                books = Books.objects(user_id=session.get('user_id'),book_name=form.book_name.data)
-                if not books:
-                    f = request.files['upload']
-                    full_name = str(active_user.user_id) + '_' + str(random.randint(10, 200)) + '_' + secure_filename(f.filename)
-                    f.save('application/static/uploads/2020/' + full_name)
 
-                    book_name   = form.book_name.data
-                    author      = form.author.data
-                    user_id     = active_user.user_id
-                    image_url   = full_name
-                    slug        = title.getSlug(form.book_name.data)
-                    ISBN        = form.ISBN.data
-                    category    = form.category.data
-                    overview    = form.overview.data
-                    date        = datetime.now()
+            if page_data.form.validate_on_submit():
+                #form upload image file details
+                form_file_upload = request.files['upload']
+                upload_file_name = str(active_user.user_id) + '_' + str(random.randint(10, 200)) + '_' + secure_filename(form_file_upload.filename)
+                form_file_upload.save('application/static/uploads/2020/' + upload_file_name)
 
-                    book = Books(book_name=book_name, author=author, user_id=user_id, image_url=image_url, ISBN=ISBN, category=category, overview=overview, date=date)
-                    book.save()
-                    print(slug)
-                    flash('You are successfully added a new book!', 'success')
-                    return redirect(url_for('myaccount')+'/mybooks')
-                else:
-                    flash('This book already exists in your account! Try another one', 'danger')
-                    return render_template('myaccount/add_new_book.html', login=login, form=form, user=active_user)
+                book_name   = page_data.form.book_name.data
+                author      = page_data.form.author.data
+                user_id     = page_data.user.user_id
+                image_url   = upload_file_name
+                slug        = page_data.slug_ob.getSlug(page_data.form.book_name.data)
+                ISBN        = page_data.form.ISBN.data
+                category    = page_data.form.category.data
+                overview    = page_data.form.overview.data
+                date        = datetime.now()
+
+                book = Books(book_name=book_name, author=author, user_id=user_id, image_url=image_url, slug=slug, ISBN=ISBN, category=category, overview=overview, date=date)
+                book.save()
+                flash('You are successfully added a new book!', 'success')
+                return redirect(url_for('myaccount')+'/mybooks')
+
             else:
-                return render_template('myaccount/add_new_book.html', login=login, form=form, user=active_user)
+                return render_template('myaccount/add_new_book.html', page_data=page_data)
         elif term  == 'edit_book':
 
-            if title:
-                book_title =Title.getTitle(title)
-                book = Books.objects(book_name=book_title)
-                #FormHelper('Parenting')
-                form = EditBook(request.form, category=book[0].category)
-                #form.category.default='Parenting'
-                helper=Helper
-                if form.validate_on_submit():
-                    image_url_link=book[0].image_url
+            if slug:
+                if page_data.form.validate_on_submit():
+                    image_url_link=page_data.books[0].image_url
                     if request.files['upload']:
-                        f = request.files['upload']
-                        image_url_link = str(active_user.user_id) + '_' + str(random.randint(10, 200)) + '_' + secure_filename(f.filename)
+                        form_file_upload = request.files['upload']
+                        image_url_link = str(page_data.user.user_id) + '_' + str(random.randint(10, 200)) + '_' + secure_filename(form_file_upload.filename)
                         #2_198_all-iphone.png
-                        if book[0].image_url:
-                            os.remove('application/static/uploads/2020/' + book[0].image_url)
-                        f.save('application/static/uploads/2020/' + image_url_link)
+                        if page_data.books[0].image_url:
+                            os.remove('application/static/uploads/2020/' + page_data.books[0].image_url)
+                        form_file_upload.save('application/static/uploads/2020/' + image_url_link)
 
-                    book_name = form.book_name.data
-                    author = form.author.data
-                    user_id = active_user.user_id
-                    image_url = image_url_link
-                    ISBN = form.ISBN.data
-                    category = form.category.data
-                    overview = form.overview.data
-                    date=datetime.now()
-                    update_book = book.update(book_name=book_name, author=author, user_id=user_id, image_url=image_url, ISBN=ISBN, category=category, overview=overview, date=date)
+                    book_name   = page_data.form.book_name.data
+                    author      = page_data.form.author.data
+                    user_id     = active_user.user_id
+                    image_url   = image_url_link
+                    slug        = page_data.books[0].slug
+                    ISBN        = page_data.form.ISBN.data
+                    category    = page_data.form.category.data
+                    overview    = page_data.form.overview.data
+                    date        =datetime.now()
+                    update_book = page_data.books.update(book_name=book_name, author=author, user_id=user_id, image_url=image_url, slug=slug, ISBN=ISBN, category=category, overview=overview, date=date)
                     flash('You are successfully update your book!', 'success')
-                    return redirect(url_for('myaccount')+'/edit_book/'+title+'#isbn='+ISBN)
+                    return redirect(url_for('myaccount')+'/edit_book/'+page_data.books[0].slug)
                 else:
-                    return render_template('myaccount/edit_book.html', login=login, title=title, book_title=book_title, book=book, helper=helper, form=form, user=active_user)
+                    return render_template('myaccount/edit_book.html', page_data=page_data)
             else:
                 redirect(url_for('myaccount')+'mybooks')
         elif term  == 'delete_book':
 
-            if title:
-                form = DeleteBook()
-                book_title =Title.getTitle(title)
-                book = Books.objects(book_name=book_title,user_id=active_user.user_id)
+            if slug:
+                book = Books.objects(slug=slug)
                 os.remove('application/static/uploads/2020/' + book[0].image_url)
-                if form.validate_on_submit():
+                if page_data.form.validate_on_submit():
                     book.delete()
                     flash('You\'r book successfully deleted!', 'success')
                     return redirect(url_for('myaccount')+'/mybooks')
@@ -285,15 +317,14 @@ def myaccount(term="login",title=''):
 
 
         elif term  == 'change_password':
-            form = ChangePassword(request.form, old_password='asdf')
-            if form.validate_on_submit():
-                new_password = form.new_password.data
+            if page_data.form.validate_on_submit():
+                new_password = page_data.form.new_password.data
                 active_user.set_password(new_password)
                 update_book = active_user.update(password=active_user.password)
                 flash('You\'r password successfully updated!', 'success')
                 return redirect(url_for('myaccount')+'/change_password')
             else:
-                return render_template('myaccount/change_password.html', login=login, form=form, user=active_user)
+                return render_template('myaccount/change_password.html', page_data=page_data)
         elif term  == 'logout':
             session['user_id']  = False
             session['login'] = False
@@ -304,21 +335,20 @@ def myaccount(term="login",title=''):
     else:
         if term == 'register':
 
-            form = RegisterForm()
-            if form.validate_on_submit():
-                name = form.name.data
-                email = form.email.data
-                password = form.password.data
+            if page_data.form.validate_on_submit():
+                name = page_data.form.name.data
+                email = page_data.form.email.data
+                password = page_data.form.password.data
                 user = Users.objects(email=email).first()
                 if (user):
                     flash('You\'r email already existed! Please try another one.', 'danger')
-                    return render_template('myaccount/register.html', form=form, login=login)
+                    return render_template('myaccount/register.html', page_data=page_data)
                 else:
                     user_id= Users.objects.all().count()
                     user_id+= 1
-                    name       = form.name.data
-                    email    = form.email.data
-                    password  = form.password.data
+                    name       = page_data.form.name.data
+                    email    = page_data.form.email.data
+                    password  = page_data.form.password.data
 
                     user = Users(user_id=user_id, name=name, email=email, password=password)
                     user.set_password(password)
@@ -330,13 +360,14 @@ def myaccount(term="login",title=''):
                     return redirect(url_for('myaccount')+'/profile')
 
             else:
-                return render_template('myaccount/register.html', form=form, login=login)
+                return render_template('myaccount/register.html', page_data=page_data)
 
 
         elif term == 'login':
-            if form.validate_on_submit():
-                email = form.email.data
-                password = form.password.data
+
+            if page_data.form.validate_on_submit():
+                email = page_data.form.email.data
+                password = page_data.form.password.data
                 user = Users.objects(email=email).first()
                 if user and user.get_password(password):
                     session['user_id']  = user.user_id
@@ -352,7 +383,7 @@ def myaccount(term="login",title=''):
                         return redirect(url_for('myaccount')+'/profile')
 
 
-            return render_template('myaccount/login.html', form=form, login=login)
+            return render_template('myaccount/login.html', page_data=page_data)
         else:
             return redirect(url_for('myaccount')+'/login')
 

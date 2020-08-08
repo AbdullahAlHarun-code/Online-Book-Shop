@@ -2,7 +2,11 @@
 {% block content %}
 
   <div id="templatemo_content">
-    <h1>404 page</h1>
+    {% if text %}
+      <h2 class="text-center">{{text}}</h2>
+    {% else %}
+      <h2 class="text-center">404 page</h2>
+    {%endif%}
   </div>
 
 {% endblock %}

@@ -12,9 +12,9 @@
             <div class="carousel-item active">
                <div class="row">
                   {% for key in range(0,4) %}
-                  <a href="{{url_for('single_book')}}/{{title.getUrlTitle(books[key].book_name)}}?isbn={{books[key].ISBN}}" class="templatemo_product_box">
-                     <h1>{{title.getBookTitle(books[key].book_name)}}</h1>
-                     <img src="{{ url_for('static', filename='uploads/2020/')}}{{books[key].image_url}}" alt="image" />
+                  <a href="{{ url_for('single_book')}}/{{(page_data.recently_added[key].slug) }}" class="templatemo_product_box">
+                     <h1>{{page_data.slug_ob.getBookTitle(page_data.recently_added[key].book_name).title()}}</h1>
+                     <img src="{{ url_for('static', filename='uploads/2020/')}}{{page_data.recently_added[key].image_url}}" alt="image" />
                      <div class="cleaner">&nbsp;</div>
                   </a>
                   {% endfor %}
@@ -23,9 +23,9 @@
             <div class="carousel-item">
                <div class="row">
                   {% for key in range(4,8) %}
-                  <a href="{{url_for('single_book')}}/{{title.getUrlTitle(books[key].book_name)}}?isbn={{books[key].ISBN}}" class="templatemo_product_box">
-                     <h1>{{title.getBookTitle(books[key].book_name)}}</h1>
-                     <img src="{{ url_for('static', filename='uploads/2020/')}}{{books[key].image_url}}" alt="image" />
+                  <a href="{{ url_for('single_book')}}/{{(page_data.recently_added[key].slug) }}" class="templatemo_product_box">
+                     <h1>{{page_data.slug_ob.getBookTitle(page_data.recently_added[key].book_name).title()}}</h1>
+                     <img src="{{ url_for('static', filename='uploads/2020/')}}{{page_data.recently_added[key].image_url}}" alt="image" />
                      <div class="cleaner">&nbsp;</div>
                   </a>
                   {% endfor %}

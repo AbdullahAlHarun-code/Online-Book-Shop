@@ -12,12 +12,12 @@
                <div class="well profile">
                  <div class="col-sm-12">
                      <div class="col-xs-12 col-sm-12 col-md-12">
-                       {% for book in books %}
+                       {% for book in page_data.user_books %}
                        <div class="templatemo_product_box mybooks-product-box">
-                          <h1>{{title.getBookTitle(book.book_name)}}</h1>
+                          <h1>{{page_data.slug_ob.getBookTitle(book.book_name)}}</h1>
                           <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
                           <div class="product_info">
-                             <div class="detail_button"><a href="{{ url_for('myaccount') }}book_view/{{title.getUrlTitle(book.book_name)}}?isbn={{book.ISBN}}">Detail</a></div>
+                             <div class="detail_button"><a href="{{ url_for('myaccount') }}book_view/{{book.slug}}">Detail</a></div>
                           </div>
                           <div class="cleaner">&nbsp;</div>
                        </div>
@@ -34,12 +34,6 @@
                          <h2><strong></strong></h2>
                          <a href="{{url_for('myaccount')}}add_new_book" class="btn btn-info btn-block"><span class="fa fa-plus"></span> Add Book </a>
                      </div>
-                     {% if books %}
-                     <div class="col-xs-12 col-sm-4 col-md-4 emphasis">
-                         <h2><strong></strong></h2>
-                         <a href="{{url_for('myaccount')}}edit_profile" class="btn btn-info btn-block"><span class="fa fa-edit"></span> Edit </a>
-                     </div>
-                     {% endif%}
                  </div>
             </div>
             <div class="cleaner_with_height">&nbsp;</div>

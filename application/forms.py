@@ -44,7 +44,7 @@ class AddNewBook(FlaskForm):
 
 class EditBook(FlaskForm):
     book_name = StringField('Name', validators=[DataRequired(), Length(min=2,max=200)])
-    author = StringField('Author', validators=[DataRequired(), Length(min=2,max=50)])
+    author = StringField('Author', validators=[DataRequired(), Length(min=2,max=100)])
     ISBN = StringField('ISBN', validators=[DataRequired(), Length(min=2,max=50)])
     category = SelectField('Select Category', choices=Allcategory.getFinalCategory())
     overview = TextAreaField('overview', validators=[DataRequired()])

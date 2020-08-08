@@ -5,22 +5,22 @@
 <div id="templatemo_content">
   {% include 'includes/left-sidebar.html'%}
    <div id="templatemo_content_right">
-     <h1>{{title.getTitle(cat).capitalize()}}</h1>
-     {% if books %}
-       {% for book in books %}
+     <h1>{{ page_data.page_title }}</h1>
+     {% if page_data.books and page_data.books_content %}
+       {% for book in page_data.books %}
         <div class="templatemo_product_box mybooks-product-box">
-           <h1>{{title.getBookTitle(book.book_name)}}</h1>
+           <h1>{{page_data.slug_ob.getBookTitle(book.book_name)}}</h1>
            <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
            <div class="product_info">
-              <div class="detail_button"><a href="{{ url_for('single_book') }}/{{title.getUrlTitle(book.book_name)}}?isbn={{book.ISBN}}">Detail</a></div>
+              <div class="detail_button"><a href="{{ url_for('single_book') }}{{(book.slug)}}">Detail</a></div>
            </div>
            <div class="cleaner">&nbsp;</div>
         </div>
         {% endfor%}
       {% else %}
-        {% if title.getTitle(cat)=='All Categories' %}
-          {% for category in categories %}
-            <a href="{{url_for('category')}}/{{title.getUrlTitle(category.category_name)}}"><h1 class="category-title">{{category.category_name}}</h1></a>
+        {% if page_data.page_title=='All Categories' %}
+          {% for category in page_data.categories %}
+            <a href="{{url_for('category')}}/{{page_data.slug_ob.getUrlTitle(category.category_name)}}"><p class="category-list-style">{{category.category_name}}</p></a>
           {% endfor %}
         {% else%}
           <p>No books found!</p>

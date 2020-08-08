@@ -7,7 +7,13 @@ import time
 import bson
 import calendar
 #from application.models import Users, Books, Testuser
+"""
+This file mainly helper method for app file and html file.
+# slug making and get slug
+# get date
+# get all categories
 
+"""
 class Allcategory():
     app1 = Flask(__name__)
     app1.config['MONGO_DBNAME']='book_shop'
@@ -40,7 +46,7 @@ class Allcategory():
     #test=final_category[0]
 
 
-class Title():
+class Slug():
 
     def getUrlTitle(title):
         final_title = title.split()

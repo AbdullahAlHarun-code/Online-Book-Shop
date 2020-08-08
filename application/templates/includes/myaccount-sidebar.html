@@ -3,7 +3,7 @@
       <h1>My Account</h1>
       <ul>
          <li><a href="{{ url_for('myaccount')}}/profile"><i class="fa fa-angle-right"></i> Profile</a></li>
-         <li><a href="{{ url_for('myaccount')}}/mybooks"><i class="fa fa-angle-right"></i> My Books</a></li>
+         <li><a href="{{ url_for('myaccount')}}/mybooks"><i class="fa fa-angle-right"></i> My Books({{page_data.user_books.count()}})</a></li>
          <li><a href="{{ url_for('myaccount')}}/add_new_book"><i class="fa fa-angle-right"></i> Add New Book</a></li>
          <li><a href="{{ url_for('myaccount')}}/change_password"><i class="fa fa-angle-right"></i> Change Password</a></li>
          <li><a href="{{ url_for('myaccount')}}/logout"><i class="fa fa-angle-right"></i> Logout</a></li>
