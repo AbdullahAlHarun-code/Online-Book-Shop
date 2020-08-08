@@ -5,7 +5,7 @@ Mat Online Book Shop is a python base framework flask creates storefront online 
 
 # Demo
 A live demo version can be found [here](http://mat-online-book-shop.herokuapp.com/)
-![alt text](https://i.ibb.co/j58Ry0t/multi-device-image.png "Demo")
+![alt text](https://i.ibb.co/qNdTnbZ/responsive.png "Demo")
 
 
 ## UX
