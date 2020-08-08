@@ -717,7 +717,18 @@ img {
 	color: #fff;
 	font-weight: normal;
 }
+
 /* end of footer */
+
+/*
+	visibiliity
+*/
+.hidden{
+	display:none;
+}
+.visible-xs{
+	display:block !important;
+}
 /* Css for responsive */
 @include phone{
   .container{min-width:100%}
@@ -755,6 +766,9 @@ img {
   }
 	.fix-heading{
 		height:160px;
+	}
+	#templatemo_content_right h1{
+
 	}
 	body{
 		font-size: 2.5rem;

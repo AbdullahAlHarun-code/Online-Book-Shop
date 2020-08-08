@@ -1,4 +1,4 @@
-# Mat Online Book Shop
+# Online Book Shop
 
 Mat Online Book Shop is a python base framework flask creates storefront online book store for customers to only short informations for all categories books with ISBN number. The entire application can be created with a bootstrap template.
  You can browse and search for books by category. Get started with building your own below!  
