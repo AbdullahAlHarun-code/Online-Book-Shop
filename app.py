@@ -18,19 +18,23 @@ from werkzeug.utils import secure_filename
 from application.models import Users, Books, Testuser, Categories
 from application.dbmodels import Slug, Helper
 
+"""
+    # This Application have two section
+    #
+"""
 
-# from flask_uploads import configure_uploads, IMAGES, UploadSet
-
+## All method section
+# this method for user login check
 def check_login():
     if session.get('login'):
         return True
     else:
         return False
 
+## End method section
 
-# This number for how many items show per page
+# This number for how many books show per page
 
-count_item_per_page = 6
 
 
 # This root for Home Page
@@ -89,6 +93,7 @@ def pagination(
 # this method return pagination html element and filter books
 
 def get_pagination_filterBooks(books, items, page_link):
+    count_item_per_page = 6
     range_product = '1-' + str(count_item_per_page)
     filter_books = ''
     if items:

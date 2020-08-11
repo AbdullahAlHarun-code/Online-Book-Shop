@@ -79,7 +79,7 @@ class Helper():
         final_date = str(date.day)
         final_date += '-'+str(date.strftime("%b"))
         final_date += ' '+str(date.year)
-        final_date += ' '+str(date.strftime("%H:%M:%S"))
+        #final_date += ' '+str(date.strftime("%H:%M:%S"))
         #calendar.timegm(time.gmtime())
         return final_date
 

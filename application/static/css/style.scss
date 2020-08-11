@@ -720,6 +720,7 @@ img {
 
 /* end of footer */
 
+
 /*
 	visibiliity
 */
@@ -729,7 +730,40 @@ img {
 .visible-xs{
 	display:block !important;
 }
+
 /* Css for responsive */
+.mobile-tablet-filter{
+	//display:none;
+	width:100% !important;
+	ul{
+		li{
+			display:block !important;
+			clear:both;
+			width:100%;
+			background:#543715;
+			margin-bottom:15px;
+			a{
+				display:block;
+				padding:5px;
+			}
+		}
+	}
+	.tab-content{
+			.active{
+					background:none;
+					padding:5px;
+					ul{
+							li{
+									list-style:none;
+									a{
+
+									}
+							}
+					}
+			}
+
+	}
+}
 @include phone{
   .container{min-width:100%}
   #templatemo_header {
@@ -751,9 +785,15 @@ img {
   .top-dropdown-menu{
     display:none;
   }
-  #templatemo_content_left{
+	#templatemo_content_left{
+    width:100% !important;
+  }
+  #templatemo_content_desktop-left{
     display:none;
   }
+	.mobile-tablet-filter{
+		display:block;
+	}
 	body{
 		font-size: 2.5rem;
 	}
@@ -788,9 +828,13 @@ img {
   .top-dropdown-menu{
     display:none;
   }
-  #templatemo_content_left{
+  #templatemo_content_desktop-left{
     display:none;
   }
+	#templatemo_content_left{
+    width:100% !important;
+  }
+
   #templatemo_content_right{
     width:100% !important;
   }
