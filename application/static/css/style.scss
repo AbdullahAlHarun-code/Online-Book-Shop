@@ -733,7 +733,7 @@ img {
 
 /* Css for responsive */
 .mobile-tablet-filter{
-	//display:none;
+
 	width:100% !important;
 	ul{
 		li{
@@ -848,19 +848,31 @@ img {
   .topnav .icon{
     display:none;
   }
+	.mobile-tablet-filter{
+		display:none;
+	}
 }
 @include largeDesktop{
   .topnav .icon{
     display:none;
   }
+	.mobile-tablet-filter{
+		display:none;
+	}
 }
 @include largeMdesktop{
   .topnav .icon{
     display:none;
   }
+	.mobile-tablet-filter{
+		display:none;
+	}
 }
 @include customdesktop1{
   .topnav .icon{
     display:none;
   }
+	.mobile-tablet-filter{
+		display:none;
+	}
 }
