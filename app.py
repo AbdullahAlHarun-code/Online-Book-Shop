@@ -20,6 +20,7 @@ from application.dbmodels import Slug, Helper
 
 """
     # This Application have two section
+    # Router section
     #
 """
 
@@ -131,6 +132,18 @@ def is_books_content(books_content):
     else:
         return False
 
+@app.errorhandler(404)
+def not_found(e):
+    page_data = page_initial_data('single_book', None, None)
+    return render_template('404.html', page_data=page_data, text=e)
+
+def get_categories():
+    try:
+        Categories.objects.all()
+    except e:
+        flash('You are successfully updated your profile!',
+              'success')
+        return redirect(url_for('404'))
 
 # this method return a page content class for al pages
 
@@ -305,7 +318,6 @@ def myaccount(term='login', slug=''):
                             Users.objects(user_id=session.get('user_id'
                                 )).update(name=name, email=email)
 
-                        # user.set_password(password)
 
                         flash('You are successfully update your profile!'
                               , 'success')

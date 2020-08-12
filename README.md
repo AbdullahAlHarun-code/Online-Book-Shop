@@ -23,7 +23,6 @@ Simplicity is often referred to as one of the fundamental principles of UX desig
 - User can Edit their Account information.
 - User can Edit their book information.
 - User can delete their book.
-- User can track their orders.
 
 ## Project Development
 This project is developed by,
