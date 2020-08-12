@@ -37,8 +37,6 @@ This project is developed by,
 
 Thanks & Regards
 
-*[Tahmid Nishat](https://tahmid-ni7.github.io/portfolio/)*
+*[Abdullah Al Harun](https://abdullahalharun-code.github.io/Resume/index.html)*
 
 `Email: aharun46@gmail.com`
-
-#### Have a look to project interface [screenshots](https://imgur.com/a/vPxwOiF) here.
