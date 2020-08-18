@@ -1,38 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <!-- end of header -->
 <div id="templatemo_content">
-  {% include 'includes/left-sidebar.html'%}
+   {% include 'includes/left-sidebar.html'%}
    <div id="templatemo_content_right">
-     <h1>{{page_data.page_title}}</h1>
-     {% if page_data.books %}
-       {% for book in page_data.books %}
-        <div class="templatemo_product_box mybooks-product-box">
-           <h1>{{page_data.slug_ob.getBookTitle(book.book_name).title()}}</h1>
-           <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
-           <div class="product_info">
-              <div class="detail_button"><a href="{{ url_for('single_book') }}{{(book.slug)}}">Detail</a></div>
-           </div>
-           <div class="cleaner">&nbsp;</div>
-        </div>
-        {% endfor%}
+      <h1>{{title}}</h1>
+      {% if books %}
+      {% for book in books %}
+      <div class="templatemo_product_box mybooks-product-box">
+         <h1>{{slug_ob.getBookTitle(book.book_name).title()}}</h1>
+         <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
+         <div class="product_info">
+            <div class="detail_button"><a href="{{ url_for('book') }}{{(book.slug)}}">Detail</a></div>
+         </div>
+         <div class="cleaner">&nbsp;</div>
+      </div>
+      {% endfor%}
       {% else %}
-        <p>No books found!</p>
-        <div class="cleaner_with_height">&nbsp;</div>
-
-      {% endif %}
-
+      <p>No books found!</p>
       <div class="cleaner_with_height">&nbsp;</div>
-      {{page_data.page_pagination}}
-
-
-
-
+      {% endif %}
+      <div class="cleaner_with_height">&nbsp;</div>
+      {% if pagination_box %}
+      {{pagination_box}}
+      {% endif %}
    </div>
    <!-- end of content right -->
    <div class="cleaner_with_height">&nbsp;</div>
 </div>
 <!-- end of content -->
-
 {% endblock %}

@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-
-  <div id="templatemo_content">
-    {% if text %}
-      <h5 class="text-center">{{text}}</h5>
-    {% else %}
-      <h5 class="text-center">404 page</h5>
-    {%endif%}
-  </div>
-
+<div id="templatemo_content">
+   {% if text %}
+   <h5 class="text-center">{{text}}</h5>
+   {% else %}
+   <h5 class="text-center">404 page</h5>
+   {%endif%}
+</div>
 {% endblock %}

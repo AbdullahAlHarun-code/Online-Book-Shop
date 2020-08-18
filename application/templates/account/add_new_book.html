@@ -2,58 +2,58 @@
 {% block content %}
 <div id="templatemo_content">
    <div id="templatemo_content">
-      {% include "includes/myaccount-sidebar.html" %}
+      {% include "includes/account-sidebar.html" %}
       <!-- end of content left -->
       <div id="templatemo_content_right">
          <h1>Add New Book</h1>
          <div class="well profile">
             <div class="col-sm-12">
                <div class="col-xs-12 col-sm-8">
-                  <form action="{{ url_for('myaccount')}}add_new_book" method="post" enctype="multipart/form-data">
-                     {{ page_data.form.hidden_tag() }}
+                  <form action="{{ url_for('account')}}add_new_book" method="post" enctype="multipart/form-data">
+                     {{ form.hidden_tag() }}
                      <div class="form-group">
-                        {{ page_data.form.book_name.label }}
-                        {{ page_data.form.book_name(size=35,class="form-control") }}
-                        {% for error in page_data.form.book_name.errors %}
+                        {{ form.book_name.label }}
+                        {{ form.book_name(size=35,class="form-control") }}
+                        {% for error in form.book_name.errors %}
                         <span class="error-message">{{ error }}</span>
                         {% endfor %}
                      </div>
                      <div class="form-group">
-                        {{ page_data.form.author.label }}
-                        {{ page_data.form.author(size=35,class="form-control") }}
-                        {% for error in page_data.form.author.errors %}
+                        {{ form.author.label }}
+                        {{ form.author(size=35,class="form-control") }}
+                        {% for error in form.author.errors %}
                         <span class="error-message">{{ error }}</span>
                         {% endfor %}
                      </div>
                      <div class="form-group">
-                        {{ page_data.form.ISBN.label }}
-                        {{ page_data.form.ISBN(size=35,class="form-control") }}
-                        {% for error in page_data.form.ISBN.errors %}
+                        {{ form.ISBN.label }}
+                        {{ form.ISBN(size=35,class="form-control") }}
+                        {% for error in form.ISBN.errors %}
                         <span class="error-message">{{ error }}</span>
                         {% endfor %}
                      </div>
                      <div class="form-group">
-                        {{ page_data.form.overview.label }}
-                        {{ page_data.form.overview(class="form-control") }}
-                        {% for error in page_data.form.overview.errors %}
+                        {{ form.overview.label }}
+                        {{ form.overview(class="form-control") }}
+                        {% for error in form.overview.errors %}
                         <span class="error-message">{{ error }}</span>
                         {% endfor %}
                      </div>
                      <div class="form-group">
-                        {{ page_data.form.category.label }}
-                        {{ page_data.form.category(class="form-control") }}
-                        {% for error in page_data.form.category.errors %}
+                        {{ form.category.label }}
+                        {{ form.category(class="form-control") }}
+                        {% for error in form.category.errors %}
                         <span class="error-message">{{ error }}</span>
                         {% endfor %}
                      </div>
                      <div class="form-group">
-                        {{ page_data.form.upload.label }}
-                        {{ page_data.form.upload(class="form-control") }}
-                        {% for error in page_data.form.upload.errors %}
+                        {{ form.upload.label }}
+                        {{ form.upload(class="form-control") }}
+                        {% for error in form.upload.errors %}
                         <span class="error-message">{{ error }}</span>
                         {% endfor %}
                      </div>
-                     {{ page_data.form.submit(class="btn btn-warning") }}
+                     {{ form.submit(class="btn btn-warning") }}
                   </form>
                </div>
             </div>

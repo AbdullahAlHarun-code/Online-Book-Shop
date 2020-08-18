@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div id="templatemo_content">
+   <div id="templatemo_content">
+      <div id="templatemo_content_right" class="register-login">
+         <img class="page-header" src="{{ url_for('static', filename='images/page-header-bg.png')}}" alt="">
+         <h1>Login</h1>
+         <form action="{{ url_for('account')}}login" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+               {{ form.email.label }}
+               {{ form.email(size=35,class="form-control") }}
+               {% for error in form.email.errors %}
+               <span class="error-message">{{ error }}</span>
+               {% endfor %}
+            </div>
+            <div class="form-group">
+               {{ form.password.label }}
+               {{ form.password(size=35,class="form-control") }}
+               {% for password in form.password.errors %}
+               <span class="error-message">{{ password }}</span>
+               {% endfor %}
+            </div>
+            <div class="checkbox">
+               <label><input type="checkbox"> Remember me</label>
+            </div>
+            {{ form.submit(class="btn btn-warning") }}
+         </form>
+         <div class="cleaner_with_height">&nbsp;</div>
+      </div>
+      <!-- end of content right -->
+      <!-- end of content right -->
+      <div class="cleaner_with_height">&nbsp;</div>
+   </div>
+   <!-- end of content -->
+</div>
+{% endblock %}

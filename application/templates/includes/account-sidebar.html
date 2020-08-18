@@ -1,0 +1,12 @@
+<div id="templatemo_content_left">
+   <div class="templatemo_content_left_section">
+      <h1>My Account</h1>
+      <ul>
+         <li><a href="{{ url_for('account')}}/profile"><i class="fa fa-angle-right"></i> Profile</a></li>
+         <li><a href="{{ url_for('account')}}/books"><i class="fa fa-angle-right"></i> My Books({{page_data.get_user_books().count()}})</a></li>
+         <li><a href="{{ url_for('account')}}/add_new_book"><i class="fa fa-angle-right"></i> Add New Book</a></li>
+         <li><a href="{{ url_for('account')}}/change_password"><i class="fa fa-angle-right"></i> Change Password</a></li>
+         <li><a href="{{ url_for('account')}}/logout"><i class="fa fa-angle-right"></i> Logout</a></li>
+      </ul>
+   </div>
+</div>

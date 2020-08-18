@@ -1,18 +1,17 @@
 <div id="most_viewed_section">
-  {% if page_data.most_viewed %}
-    {% for book in page_data.most_viewed[0:8] %}
-     <div class="templatemo_product_box mybooks-product-box">
-        <h1>{{page_data.slug_ob.getBookTitle(book.book_name).title()}}</h1>
-        <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
-        <div class="product_info">
-           <div class="detail_button"><a href="{{ url_for('single_book') }}{{(book.slug)}}">Detail</a></div>
-        </div>
-        <div class="cleaner">&nbsp;</div>
-     </div>
-     {% endfor%}
+   {% if page_data.get_most_viewed_books() %}
+   {% for book in page_data.get_most_viewed_books()[0:8] %}
+   <div class="templatemo_product_box mybooks-product-box">
+      <h1>{{slug_ob.getBookTitle(book.book_name).title()}}</h1>
+      <img src="{{ url_for('static', filename='uploads/2020/')}}{{book.image_url}}" alt="image" />
+      <div class="product_info">
+         <div class="detail_button"><a href="{{ url_for('book') }}{{(book.slug)}}">Detail</a></div>
+      </div>
+      <div class="cleaner">&nbsp;</div>
+   </div>
+   {% endfor%}
    {% else %}
-     <p>No books found!</p>
+   <p>No books found!</p>
    <div class="cleaner_with_height">&nbsp;</div>
    {% endif %}
-
 </div>

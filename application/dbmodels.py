@@ -6,79 +6,63 @@ from datetime import datetime
 import time
 import bson
 import calendar
-#from application.models import Users, Books, Testuser
-"""
-This file mainly helper method for app file and html file.
-# slug making and get slug
-# get date
-# get all categories
+from application.models import Categories
 
-"""
+# Category select form helper for upload book category
 class Allcategory():
-    app1 = Flask(__name__)
-    app1.config['MONGO_DBNAME']='book_shop'
-    app1.config['MONGO_URI'] = 'mongodb+srv://root:Zee9Zee9@firstcluster.qhtcj.mongodb.net/book_shop?retryWrites=true&w=majority'
-
-    app1.secret_key = 'asdfaiueh345345wk3jfnsdjkfkdjfvkdfjgsdfg45345'
-
-    mongo1 = PyMongo(app1)
-    categories=mongo1.db.categories.find()
-    final_category=[]
-    #final_category.append('Select Your Category')
+    categories      =  Categories.objects.all()
+    final_category  =  []
     for category in categories:
         final_category.append(category['category_name'])
-
     def getFinalCategory():
-        app1 = Flask(__name__)
-        app1.config['MONGO_DBNAME']='book_shop'
-        app1.config['MONGO_URI'] = 'mongodb+srv://root:Zee9Zee9@firstcluster.qhtcj.mongodb.net/book_shop?retryWrites=true&w=majority'
-
-        app1.secret_key = 'asdfaiueh345345wk3jfnsdjkfkdjfvkdfjgsdfg45345'
-
-        mongo1 = PyMongo(app1)
-        categories=mongo1.db.categories.find()
-        final_category=[]
+        categories      = Categories.objects.all()
+        final_category  = []
         final_category.append(['Select Your Category','Select Your Category'])
         for category in categories:
             final_category.append([category['category_name'],category['category_name']])
         return final_category
 
-    #test=final_category[0]
+    def get_book_category():
+        return Books.objects(user_id=session.get('user_id'
+            )).order_by('-date')
 
-
+# page slug helper
 class Slug():
-
+    # this method return user friendly slug or url
     def getUrlTitle(title):
-        final_title = title.split()
-        final_title = "-".join(final_title)
+        final_title     = title.split()
+        final_title     = "-".join(final_title)
         return final_title.lower()
 
+    # this method return slug to display title
     def getTitle(url_title):
-        final_title = url_title.rsplit("-")
-        final_title = " ".join(final_title)
+        final_title     = url_title.rsplit("-")
+        final_title     = " ".join(final_title)
         return final_title.title()
 
+    # this method return long title to short title
     def getBookTitle(book_title):
         if len(book_title)>15:
             return book_title[0:14]+'..'
         else:
             return book_title
 
+    # this method return slug or url with unique slug
     def getSlug(title):
-        final_title = title.split()
-        final_title = "-".join(final_title)
-        now = datetime.now()
+        final_title     = title.split()
+        final_title     = "-".join(final_title)
+        now             = datetime.now()
         return final_title.lower()+'-'+now.strftime("%Y-%m-%d-%H-%M-%S")
 
 
-
+# this is helper class for timestamp
 class Helper():
 
     def getDate(timestamp):
-        date=timestamp
-        final_date = str(date.day)
-        final_date += '-'+str(date.strftime("%b"))
-        final_date += ' '+str(date.year)
+        date        = timestamp
+        final_date  = str(date.day)
+        final_date  += '-'+str(date.strftime("%b"))
+        final_date  += ' '+str(date.year)
         #final_date += ' '+str(date.strftime("%H:%M:%S"))
         #calendar.timegm(time.gmtime())
         return final_date

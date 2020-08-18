@@ -15,43 +15,43 @@
       <div id="main_wrap" class="container">
       <div class="row">
       <div id="templatemo_menu">
-        {% if page_data.login %}
-           <div class="dropdown top-dropdown-menu">
-              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">My Account
-              <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                 <li><a href="{{ url_for('myaccount') }}/register">Profile</a></li>
-                 <li><a href="{{ url_for('myaccount') }}mybooks">My Books</a></li>
-                 <li><a href="{{ url_for('myaccount') }}add_new_book">Add New Book</a></li>
-                 <li><a href="{{ url_for('myaccount') }}change_password">Change Password</a></li>
-                 <li><a href="{{ url_for('myaccount') }}logout">Logout</a></li>
-              </ul>
-           </div>
+         {% if page_data.check_login() %}
+         <div class="dropdown top-dropdown-menu">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">My Account
+            <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+               <li><a href="{{ url_for('account') }}/register">Profile</a></li>
+               <li><a href="{{ url_for('account') }}mybooks">My Books</a></li>
+               <li><a href="{{ url_for('account') }}add_new_book">Add New Book</a></li>
+               <li><a href="{{ url_for('account') }}change_password">Change Password</a></li>
+               <li><a href="{{ url_for('account') }}logout">Logout</a></li>
+            </ul>
+         </div>
          {% endif %}
          <ul class="visible-md visible-sm visible-lg">
-            <li><a href="{{ url_for('home') }}" class="current">Home</a></li>
-            <li><a href="{{ url_for('browse') }}">Browse</a></li>
-            {% if not page_data.login %}
-              <li><a href="{{ url_for('myaccount') }}/login">Login</a></li>
-              <li><a href="{{ url_for('myaccount') }}/register">Register</a></li>
+            <li><a href="{{ url_for('home') }}" class="{{'current' if class_active=='home'}}">Home</a></li>
+            <li><a href="{{ url_for('browse') }}" class="{{'current' if class_active=='browse'}}">Browse</a></li>
+            {% if not page_data.check_login() %}
+            <li><a href="{{ url_for('account') }}/login">Login</a></li>
+            <li><a href="{{ url_for('account') }}/register">Register</a></li>
             {% endif %}
          </ul>
          <!-- Simulate a smartphone / tablet -->
          <!-- Top Navigation Menu -->
          <div class="topnav">
             <div id="myLinks" class="collapse">
-               <a href="{{ url_for('home') }}">Home</a>
-               <a href="{{ url_for('browse') }}">Browse</a>
-               {% if page_data.login %}
-                 <a href="{{ url_for('myaccount') }}/register">Profile</a>
-                 <a href="{{ url_for('myaccount') }}mybooks">My Books</a>
-                 <a href="{{ url_for('myaccount') }}add_new_book">Add New Book</a>
-                 <a href="{{ url_for('myaccount') }}change_password">Change Password</a>
-                 <a href="{{ url_for('myaccount') }}logout">Logout</a>
+               <a href="{{ url_for('home') }}" class="{{'current' if class_active=='home'}}">Home</a>
+               <a href="{{ url_for('browse') }}" class="{{'current' if class_active=='browse'}}">Browse</a>
+               {% if page_data.check_login() %}
+               <a href="{{ url_for('account') }}/register">Profile</a>
+               <a href="{{ url_for('account') }}mybooks">My Books</a>
+               <a href="{{ url_for('account') }}add_new_book">Add New Book</a>
+               <a href="{{ url_for('account') }}change_password">Change Password</a>
+               <a href="{{ url_for('account') }}logout">Logout</a>
                {% endif %}
-               {% if not page_data.login %}
-                 <a href="{{ url_for('myaccount') }}/login">Login</a>
-                 <a href="{{ url_for('myaccount') }}/register">Register</a>
+               {% if not page_data.check_login() %}
+               <a href="{{ url_for('account') }}/login">Login</a>
+               <a href="{{ url_for('account') }}/register">Register</a>
                {% endif %}
             </div>
             <button class="icon"  data-toggle="collapse" data-target="#myLinks"><i class="fa fa-bars"></i></button>
@@ -62,5 +62,4 @@
       <!-- end of menu -->
       <div class="fix-heading"></div>
       <div class="cleaner">
-
       </div>

@@ -1,7 +1,7 @@
 # Online Book Shop
 
 Mat Online Book Shop is a python base framework flask application, creates storefront online book store for customers to only short information for all categories books with ISBN number. The entire application can be created with a bootstrap template.
- You can browse and search for books by category. The main goal of the project is to simplify it for who store online tracking book information. Get started with building your own below!  
+You can browse and search for books by category. The main goal of the project is to simplify it for who store online tracking book information. Get started with building your own below!  
 
 # Demo
 A live demo version can be found [here](http://mat-online-book-shop.herokuapp.com/)
@@ -23,13 +23,15 @@ Simplicity is often referred to as one of the fundamental principles of UX desig
 - User can Edit their Account information.
 - User can Edit their book information.
 - User can delete their book.
+- Responsive on all device sizes like desktop and tablet and mobile.
+- Interactive elements
 
-## Project Development
+## Technologies Used
 This project is developed by,
 - Python framework (Flask)
 - MongoDB
 - HTML, CSS
-- CSS framework (Bootstrap-4)
+- Bootstrap-4
 - jQuery, JavaScript
 
 **Note:** The main database system is NoSQL database program MongoDB. If you want to clone and use the project, then after cloning you have to create config.py and setting your MONGODB_SETTINGS and SECRET_KEY within your Config class. Otherwise this application will not work properly.

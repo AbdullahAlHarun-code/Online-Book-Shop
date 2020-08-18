@@ -1,29 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div id="templatemo_header">
-</div>
+<div id="templatemo_header"></div>
 <!-- end of header -->
 <div id="templatemo_content">
    <div id="templatemo_content_right" class="home-content">
       <div class="leadheader center-align-header">
-          <h3 class="text-uppercase">Recently Added</h3>
-
+         <h3 class="text-uppercase">Recently Added</h3>
       </div>
-     {% include 'includes/carousel.html'%}
-     <a class="view-more" href="{{url_for('category')}}/recently_added">View More</a>
-     <div class="leadheader center-align-header">
+      {% include 'includes/carousel.html'%}
+      <a class="view-more" href="{{url_for('category')}}/recently_added">View More</a>
+      <div class="leadheader center-align-header">
          <h3 class="text-uppercase">Most Viewed</h3>
          {% include 'includes/most-viewed.html'%}
-     </div>
-     <div class="cleaner">&nbsp;</div>
-     <br><br>
-     <a class="view-more" href="{{url_for('category')}}/most_viewed">View More</a>
-     <div class="cleaner">&nbsp;</div>
+      </div>
+      <div class="cleaner">&nbsp;</div>
+      <br><br>
+      <a class="view-more" href="{{url_for('category')}}/most_viewed">View More</a>
+      <div class="cleaner">&nbsp;</div>
    </div>
    <!-- end of content right -->
    <div class="cleaner_with_height">&nbsp;</div>
 </div>
 <!-- end of content -->
-
 {% endblock %}
