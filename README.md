@@ -36,6 +36,25 @@ This project is developed by,
 
 **Note:** The main database system is NoSQL database program MongoDB. If you want to clone and use the project, then after cloning you have to create config.py and setting your MONGODB_SETTINGS and SECRET_KEY within your Config class. Otherwise this application will not work properly.
 
+## Testing:
+This site was tested across multiple screen sizes on Chrome, Safari, and Internet Explorer. To ensure compatibility and responsiveness it is also tested on an android based mobile device (OnePlus5). A large amount of testing was done to ensure that all pages were linking correctly and user registration and uploading book work perfectly.
+
+## Deployment:
+The example of this code is hosted by using Heroku and Mongo Atlas, this code is deployed to GitHub directly from the master branch. The deployed site will update automatically upon new commits to the master branch.
+
+To run locally, you can clone this repository directly into the editor of your choice by entering git clone https://github.com/AbdullahAlHarun-code/Online-Book-Shop.git into your terminal. To cut ties with this GitHub repository, type git remote rm origin into the terminal.
+
+## Credits:
+### Content
+
+-   All content was copy from  https://www.thriftbooks.com/
+
+### Media:
+-   All Images were copy from  https://www.thriftbooks.com/
+
+## Credits:
+-   My Mentor for continuous helpful feedback.
+-   Tutor support at Code Institute for their support.
 
 Thanks & Regards
 
